@@ -1,0 +1,73 @@
+{
+    "name": "@ppagent/plugin-sample",
+    "version": "0.0.6",
+    "description": "ppagent sample",
+    "types": "dist/plugin.d.ts",
+    "main": "dist/plugin.js",
+    "displayName": "PP智能体示例插件",
+    "type": "module",
+    "author": "ppagent",
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "build": "esbuild \"src/**/*.ts\" --platform=node --outdir=build --resolve-extensions=.js --out-extension:.js=.js --format=esm",
+        "build:docker": "docker build . -t @ppagent/sample --build-arg APP_ENV=production --progress=plain",
+        "start": "node build",
+        "tsx": "cross-env NODE_ENV=development tsx src/index.ts",
+        "dev": "cross-env NODE_ENV=development tsx watch src/index.ts",
+        "build:plugin": "node build.plugin.js",
+        "test": "vitest",
+        "test:watch": "vitest -w"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ppagent/ppagent"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "files": [
+        "/dist"
+    ],
+    "engines": {
+        "node": ">=20"
+    },
+    "keywords": [
+        "ppagent",
+        "chat",
+        "wechat",
+        "chatbot"
+    ],
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/ppagent/ppagent/issues"
+    },
+    "homepage": "https://github.com/ppagent/ppagent",
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "dotenv": "^16.4.5"
+    },
+    "peerDependencies": {
+        "ppagent": "latest",
+        "emittery": "^1.0.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.9.1",
+        "@types/eslint__js": "^8.42.3",
+        "@types/node": "^22.5.1",
+        "@typescript-eslint/eslint-plugin": "^8.3.0",
+        "@typescript-eslint/parser": "^8.3.0",
+        "esbuild": "^0.23.1",
+        "eslint": "^9.9.1",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "pino-pretty": "^11.3.0",
+        "prettier": "^3.3.3",
+        "tsup": "^8.3.5",
+        "tsx": "^4.19.0",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^8.3.0",
+        "vitest": "^2.0.5"
+    }
+}
