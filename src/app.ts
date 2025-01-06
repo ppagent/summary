@@ -1,5 +1,5 @@
 import { apiPlugin, config, defaultPlugin, getLogger, GlobalEventNames, PPAgent } from "ppagent";
-import samplePlugin from "./plugin.js";
+import summaryPlugin from "./plugin.js";
 import { randomUUID } from "node:crypto";
 
 const logger = getLogger("app");
@@ -7,7 +7,7 @@ const logger = getLogger("app");
 const starter = async () => {
     logger.debug("app starting");
     const chat = new PPAgent({
-        name: "sample",
+        name: "default",
         agentServiceOptions: {
             models: {
                 bots: [],
@@ -23,7 +23,7 @@ const starter = async () => {
     });
     chat.use(defaultPlugin);
     chat.use(apiPlugin);
-    chat.use(samplePlugin);
+    chat.use(summaryPlugin);
     await chat.start();
     logger.debug("app started");
     return chat;
