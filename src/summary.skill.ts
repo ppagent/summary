@@ -1,7 +1,7 @@
-import { IAgentChatEventData, IMessageContentRule, ISkill, ISkillOptions, ISkillParams, SkillSchemaBaseProperties, SourceChatContent, SourceChatMessageType } from "ppagent";
+import { extractMessageContentText, filterContentRule, getLogger, IAgentChatEventData, ILogger, IMessageContentRule, ISkill, ISkillOptions, ISkillParams, SkillSchemaBaseProperties, SourceChatContent, SourceChatMessageType } from "ppagent";
 
 export interface ISummarySkillOptions extends ISkillOptions {
-    triggerWords?: IMessageContentRule;
+    triggerRule?: IMessageContentRule;
     summaryType: "count" | "timespan";
     /**
      * 默认查询的历史消息条数
@@ -36,7 +36,7 @@ export class SummarySkill implements ISkill {
                 type: "object",
                 properties: {
                     ...SkillSchemaBaseProperties,
-                    triggerWords: {
+                    triggerRule: {
                         type: "object",
                         title: "触发条件",
                         "x-decorator": "FormItem",
@@ -110,22 +110,80 @@ export class SummarySkill implements ISkill {
                         default: 86400,
                         required: true,
                     },
+                    useSpecifiedBot: {
+                        type: "boolean",
+                        title: "使用单独的模型进行总结",
+                        "x-decorator": "FormItem",
+                        "x-decorator-props": {
+                            tooltip: "如果使用单独的模型进行总结，则不支持后续对这次总结的追问（不存储上下文）。如果使用agent中配置的后端模型，则支持后续追问。",
+                        },
+                        "x-component": "Switch",
+                        default: false,
+                    },
+                    botInstanceName: {
+                        type: "string",
+                        title: "用于总结的模型实例",
+                        "x-decorator": "FormItem",
+                        "x-decorator-props": {
+                            tooltip: "需要先开启使用单独的模型进行总结才能生效。",
+                        },
+                        "x-component": "BotSelector",
+                        "x-reactions": {
+                            dependencies: ["useSpecifiedBot"],
+                            fulfill: {
+                                state: {
+                                    display: "{{$deps[0]?'display':'none'}}",
+                                },
+                            },
+                        },
+                    },
+                    prompt: {
+                        type: "string",
+                        title: "用于总结的提示词",
+                        "x-decorator": "FormItem",
+                        "x-decorator-props": {
+                            tooltip: "如果不提供，则使用内置的提示词。",
+                        },
+                        "x-component": "Input.TextArea",
+                        "x-component-props": {
+                            rows: 6,
+                            placeholder: "如果使用内置提示词，可留空。",
+                        },
+                    },
                 },
             },
         },
     };
 
+    constructor(private _options: ISummarySkillOptions) {
+        this._logger = getLogger("summary-skill");
+    }
+
+    private _logger: ILogger;
+
     public get options(): ISkillOptions {
-        throw new Error("Method not implemented.");
+        return this._options;
     }
 
     public get params(): ISkillParams {
-        throw new Error("Method not implemented.");
+        return SummarySkill.params;
     }
 
     public async init(): Promise<void> {
         return;
     }
 
-    public async applyOnSource?(data: IAgentChatEventData): Promise<void> {}
+    public async applyOnSource?(data: IAgentChatEventData): Promise<void> {
+        const text = extractMessageContentText(data.message.content);
+        if (!text?.length) {
+            this._logger.warn("对话内容为空");
+            return;
+        }
+        const match = filterContentRule(text, this._options.triggerRule);
+        if (!match) {
+            return;
+        }
+        this._logger.info("匹配到总结对话规则，开始总结...");
+        
+    }
 }
