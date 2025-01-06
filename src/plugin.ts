@@ -1,7 +1,8 @@
 import { getLogger, IPPAgentPlugin } from "ppagent";
+import { ISummarySkillOptions, SummarySkill } from "./summary.skill.js";
 
 const logger = getLogger("summary-plugin");
-const plugin: IPPAgentPlugin =async (app, options) => {
+const plugin: IPPAgentPlugin = async (app, options) => {
     if (options?.demo) {
         logger.info(options.demo);
     }
@@ -11,13 +12,13 @@ const plugin: IPPAgentPlugin =async (app, options) => {
         needOnline: false,
         schema: {
             type: "object",
-            properties: {
-                
-            },
+            properties: {},
         },
         init: async () => {
             logger.info("summary plugin init");
-            return {};
+            return {
+                skills: [{ creator: (options) => new SummarySkill(app, options as ISummarySkillOptions), params: SummarySkill.params }],
+            };
         },
         dispose: async () => undefined,
     };
