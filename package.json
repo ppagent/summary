@@ -1,13 +1,14 @@
 {
-    "name": "@ppagent/plugin-sample",
-    "version": "0.0.6",
-    "description": "ppagent sample",
+    "name": "@ppagent/plugin-summary",
+    "version": "0.0.1",
+    "description": "支持以对话消息或者定时任务触发的聊天消息总结插件",
     "types": "dist/plugin.d.ts",
     "main": "dist/plugin.js",
-    "displayName": "PP智能体示例插件",
+    "displayName": "聊天总结技能/任务",
     "type": "module",
     "author": "ppagent",
     "scripts": {
+        "preinstall": "cross-env FFMPEG_BINARIES_URL=https://cdn.npmmirror.com/binaries/ffmpeg-static",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "build": "esbuild \"src/**/*.ts\" --platform=node --outdir=build --resolve-extensions=.js --out-extension:.js=.js --format=esm",
@@ -21,7 +22,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ppagent/ppagent"
+        "url": "git+https://github.com/ppagent/summary.git"
     },
     "publishConfig": {
         "access": "public",
@@ -35,15 +36,16 @@
     },
     "keywords": [
         "ppagent",
-        "chat",
-        "wechat",
-        "chatbot"
+        "总结",
+        "skill",
+        "task",
+        "summary"
     ],
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/ppagent/ppagent/issues"
+        "url": "https://github.com/ppagent/summary/issues"
     },
-    "homepage": "https://github.com/ppagent/ppagent",
+    "homepage": "https://github.com/ppagent/summary",
     "dependencies": {
         "cross-env": "^7.0.3",
         "dotenv": "^16.4.5",

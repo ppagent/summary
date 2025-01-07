@@ -130,7 +130,7 @@ export class SummaryTaskRunner implements ITaskRunner {
                         "x-component": "Input.TextArea",
                         "x-component-props": {
                             rows: 6,
-                            placeholder: "如果使用内置提示词，可留空。",
+                            placeholder: "如果使用内置提示词，可留空。以双下划线开头，将被作为补充要求附加到现有提示词中。如 __请以markdown格式输出。",
                         },
                     },
                     enbaleSendTo: {
