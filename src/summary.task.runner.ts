@@ -216,7 +216,7 @@ export class SummaryTaskRunner implements ITaskRunner {
         const botInstance = this._app.botManager.getInstance(options.botInstanceName);
         if (!botInstance) {
             this._logger.error("未能找到ID为" + options.botInstanceName + "的后端模型！");
-            return;
+            return { error: "未能找到ID为" + options.botInstanceName + "的后端模型！" };
         }
         let sendSourceInstance: ISource;
         let fromSourceInstance: ISource;
@@ -224,21 +224,21 @@ export class SummaryTaskRunner implements ITaskRunner {
             sendSourceInstance = this._app.sourceManager.getInstance(options.sendToSource);
             if (!sendSourceInstance) {
                 this._logger.error("未能找到ID为" + options.sendToSource + "渠道！");
-                return;
+                return { error: "未能找到ID为" + options.sendToSource + "渠道！" };
             }
             if (!options.sendTo?.length) {
                 this._logger.error("配置了单独发送给指定用户，但是没有设置要发送到的用户！");
-                return;
+                return { error: "配置了单独发送给指定用户，但是没有设置要发送到的用户！" };
             }
         } else {
             if (!options.fromSource?.length) {
                 this._logger.error("配置为推送给消息所在的群或对象，但是没有指定消息渠道！");
-                return;
+                return { error: "配置为推送给消息所在的群或对象，但是没有指定消息渠道！" };
             }
             fromSourceInstance = this._app.sourceManager.getInstance(options.fromSource);
             if (!fromSourceInstance) {
                 this._logger.error("配置为推送给消息所在的群或对象，但是指定的消息渠道不存在！");
-                return;
+                return { error: "配置为推送给消息所在的群或对象，但是指定的消息渠道不存在！" };
             }
         }
         const fromIdArr = options.fromIds.split("|");
@@ -267,5 +267,6 @@ export class SummaryTaskRunner implements ITaskRunner {
                 this._logger.error(error.message);
             }
         }
+        return { detail: "总结推送完成" };
     }
 }
