@@ -1,6 +1,6 @@
 {
     "name": "@ppagent/plugin-summary",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "支持以对话消息或者定时任务触发的聊天消息总结插件",
     "types": "dist/plugin.d.ts",
     "main": "dist/plugin.js",
