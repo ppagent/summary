@@ -77,7 +77,7 @@ export class SummarySkill implements ISkill {
                         title: "限制总结条数",
                         "x-decorator": "FormItem",
                         "x-decorator-props": {
-                            tooltip: "按聊天记录数总结的时候，如果用户没有指定总结的记录条数，则默认使用该数量",
+                            tooltip: "如果用户没有指定总结的记录条数，则默认使用该数量",
                         },
                         "x-component": "NumberPicker",
                         "x-component-props": {
@@ -171,7 +171,7 @@ export class SummarySkill implements ISkill {
         private _app: PPAgent,
         private _options: ISummarySkillOptions,
     ) {
-        this._logger = getLogger("summary-skill");
+        this._logger = getLogger(this._options.instanceName);
         this._options.defaultCount = this._options.defaultCount ?? 100;
         this._options.defaultTimeSpanInSeconds = this._options.defaultTimeSpanInSeconds ?? 0;
         if (!this._options.triggerRule?.content || !this._options.triggerRule.type) {
@@ -219,7 +219,7 @@ export class SummarySkill implements ISkill {
                 this._logger.trace("用户指定了总结条数：" + userNeedCount);
             }
         }
-        const promptsRes = await getSummaryPrompts(/* data.message.fromId */ "56155390656@chatroom", count, this._options.defaultTimeSpanInSeconds, this._options.prompt);
+        const promptsRes = await getSummaryPrompts(data.message.fromId, count, this._options.defaultTimeSpanInSeconds, this._options.prompt);
         if (!promptsRes.prompts?.length) {
             data.reply(this._options.errorFallback ?? promptsRes.error ?? "总结失败！", SourceChatMessageType.TEXT);
             return;

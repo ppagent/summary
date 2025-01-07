@@ -1,5 +1,6 @@
 import { getLogger, IPPAgentPlugin } from "ppagent";
 import { ISummarySkillOptions, SummarySkill } from "./summary.skill.js";
+import { ISummaryTaskRunnerOptions, SummaryTaskRunner } from "./summary.task.runner.js";
 
 const logger = getLogger("summary-plugin");
 const plugin: IPPAgentPlugin = async (app, options) => {
@@ -18,6 +19,7 @@ const plugin: IPPAgentPlugin = async (app, options) => {
             logger.info("summary plugin init");
             return {
                 skills: [{ creator: (options) => new SummarySkill(app, options as ISummarySkillOptions), params: SummarySkill.params }],
+                taskRunners: [{ creator: (options) => new SummaryTaskRunner(app, options as ISummaryTaskRunnerOptions), params: SummaryTaskRunner.params }],
             };
         },
         dispose: async () => undefined,

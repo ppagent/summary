@@ -44,9 +44,22 @@ export async function getSummaryPrompts(fromId: string, count: number, timespanI
                 return `[${new Date(m.createdAt)}]${m.senderNickName}：${text}`;
             })
             .join("\n");
-        const prompts = customPrompt
-            ? `${customPrompt}\n ${contents}`
-            : `你是一个中文的群聊总结的助手，你可以为一个群聊记录，提取并总结每个时间段大家在重点讨论的话题内容。
+        if (customPrompt?.length && !customPrompt.startsWith("__")) {
+            return {
+                prompts:
+                    customPrompt +
+                    `
+以下是群聊内容：
+
+${contents}                
+            `,
+            };
+        }
+        let partialPrompts = "";
+        if (customPrompt?.length) {
+            partialPrompts = customPrompt.slice(2);
+        }
+        const prompts = `你是一个中文的群聊总结的助手，你可以为一个群聊记录，提取并总结每个时间段大家在重点讨论的话题内容。
 
 请帮我将给出的群聊内容总结成一个群聊报告，包含不多于10个的话题的总结（如果还有更多话题，可以在后面简单补充）。每个话题包含以下内容：
  话题名(50字以内，附带热度，以🔥的数量表示）
@@ -60,27 +73,30 @@ export async function getSummaryPrompts(fromId: string, count: number, timespanI
 3. 无需大标题
 4. 开始给出本群讨论风格的整体评价，例如活跃、太水、太黄、太暴力、话题不集中、无聊诸如此类
 5. 请严格遵守以下示例中的文字格式，包括换行。
+${partialPrompts?.length ? "其他要求:\n" + partialPrompts : ""}
 
 最后换行，总结下今日最活跃的前五个发言者。
 ===============
 回答示例如下：
 
-整体评价：xxxxxxx
+整体评价：
+
+    📌 xxxxxxx
 
 话题总结：
 
 ✨️xxx 🔥🔥🔥：
-    1️⃣参与者：xxx。
-    2️⃣时间段：xxx。
-    3️⃣过程：xxx。
-    4️⃣评价：xxx。
+    1️⃣ 参与者：xxx。
+    2️⃣ 时间段：xxx。
+    3️⃣ 过程：xxx。
+    4️⃣ 评价：xxx。
 
 
 ✨️xxx 🔥🔥🔥：
-    1️⃣参与者：xxx。
-    2️⃣时间段：xxx。
-    3️⃣过程：xxx。
-    4️⃣评价：xxx。
+    1️⃣ 参与者：xxx。
+    2️⃣ 时间段：xxx。
+    3️⃣ 过程：xxx。
+    4️⃣ 评价：xxx。
 
 ...
 
