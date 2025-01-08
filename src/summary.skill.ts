@@ -230,8 +230,7 @@ export class SummarySkill implements ISkill {
             return;
         }
         this._logger.trace("使用自定义模型" + this._options.botInstanceName + "进行总结");
-        data.message.content = undefined;
-        data.message.type = undefined; // 结束本次回复
+        data.message = undefined; // 结束本次回复
         try {
             const res = await directRunBot(this._app.botManager.getInstance(this._options.botInstanceName), SourceChatMessageType.TEXT, promptsRes.prompts);
             if (res.text?.length) {
