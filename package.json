@@ -1,6 +1,6 @@
 {
     "name": "@ppagent/plugin-summary",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "description": "支持以对话消息或者定时任务触发的聊天消息总结插件",
     "types": "dist/plugin.d.ts",
     "main": "dist/plugin.js",
@@ -49,12 +49,11 @@
     "dependencies": {
         "cross-env": "^7.0.3",
         "dotenv": "^16.4.5",
-        "ppagent-source-gewechat": "^0.0.5",
         "typeorm": "0.3.20"
     },
     "peerDependencies": {
         "emittery": "^1.0.3",
-        "ppagent": "^0.0.31"
+        "ppagent": "^0.1.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.9.1",
@@ -73,5 +72,10 @@
         "typescript": "^5.5.4",
         "typescript-eslint": "^8.3.0",
         "vitest": "^2.0.5"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "sharp"
+        ]
     }
 }
