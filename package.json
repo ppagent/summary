@@ -47,6 +47,7 @@
     },
     "homepage": "https://github.com/ppagent/summary",
     "dependencies": {
+        "better-sqlite3": "^11.7.2",
         "cross-env": "^7.0.3",
         "dotenv": "^16.4.5",
         "typeorm": "0.3.20"
@@ -75,6 +76,16 @@
     },
     "pnpm": {
         "onlyBuiltDependencies": [
+            "better-sqlite3",
+            "esbuild",
+            "ffmpeg-static",
+            "protobufjs",
+            "sharp"
+        ],
+        "ignoredBuiltDependencies": [
+            "esbuild",
+            "ffmpeg-static",
+            "protobufjs",
             "sharp"
         ]
     }
