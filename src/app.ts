@@ -16,7 +16,6 @@ const starter = async () => {
                 agents: [],
             },
         },
-        offline: config.offline,
         taskServiceOptions: {
             tasks: [],
         },
